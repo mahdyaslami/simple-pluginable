@@ -9,6 +9,12 @@
         }
     ],
     "require": {
-        "symfony/filesystem": "^5.1"
+        "symfony/filesystem": "^5.1",
+        "mahdyaslami/simple-helpers": "^1.2"
+    },
+    "autoload": {
+        "files": [
+            "bootstrap.php"
+        ]
     }
 }

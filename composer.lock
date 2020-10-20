@@ -4,8 +4,41 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e25f4c8939f0f875339a5fb6c07542c5",
+    "content-hash": "8d087f607cbe26dfd98c68e4a7dc0f91",
     "packages": [
+        {
+            "name": "mahdyaslami/simple-helpers",
+            "version": "v1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mahdyaslami/simple-helpers.git",
+                "reference": "cc64f6feedf408d077f80ddc2213dbbafa4acf73"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mahdyaslami/simple-helpers/zipball/cc64f6feedf408d077f80ddc2213dbbafa4acf73",
+                "reference": "cc64f6feedf408d077f80ddc2213dbbafa4acf73",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mahdi Aslami Khavari",
+                    "email": "mahdyaslami@gmail.com"
+                }
+            ],
+            "description": "This is simple helpers file.",
+            "time": "2020-10-20T09:18:19+00:00"
+        },
         {
             "name": "symfony/filesystem",
             "version": "v5.1.7",
