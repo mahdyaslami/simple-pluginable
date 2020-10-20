@@ -8,5 +8,7 @@
             "email": "mahdyaslami@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "symfony/filesystem": "^5.1"
+    }
 }
