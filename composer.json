@@ -1,0 +1,12 @@
+{
+    "name": "mahdyaslami/simple-pluginable",
+    "description": "Functions that make simple pluginable.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mahdi Aslami Khavari",
+            "email": "mahdyaslami@gmail.com"
+        }
+    ],
+    "require": {}
+}
