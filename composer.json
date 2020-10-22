@@ -9,10 +9,12 @@
         }
     ],
     "require": {
-        "symfony/filesystem": "^5.1",
-        "mahdyaslami/simple-helpers": "^1.2"
+        "symfony/filesystem": "^5.1"
     },
     "autoload": {
+        "psr-4": {
+            "Simple\\Plugins\\": "src/"
+        },
         "files": [
             "bootstrap.php"
         ]
