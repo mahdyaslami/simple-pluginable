@@ -2,7 +2,7 @@
 
 namespace Simple\Plugins;
 
-final class PluginInstaller
+final class Installer
 {
     const PLUGINS_JSON = 'plugins.json';
 
