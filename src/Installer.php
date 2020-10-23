@@ -5,6 +5,8 @@ namespace Simple\Plugins;
 final class Installer
 {
     const PLUGINS_JSON = 'plugins.json';
+    const INSTALLER_PHP = 'installer.php';
+    const WORKSPACE_DIRECTORY = 'workspace';
 
     /**
      * @var null|array<string>
@@ -27,6 +29,11 @@ final class Installer
      * @var array
      */
     protected static $packages = null;
+
+    /**
+     * @var \Symfony\Component\Filesystem\Filesystem
+     */
+    protected static $filesystem = null;
 
     /**
      * Callback after autoloading.
@@ -123,8 +130,8 @@ final class Installer
     {
         $path = self::getInstallPath($package);
 
-        $installer = $path . DIRECTORY_SEPARATOR . 'installer.php';
-        if (!file_exists($path . DIRECTORY_SEPARATOR . 'installer.php')) {
+        $installer = $path . DIRECTORY_SEPARATOR . self::INSTALLER_PHP;
+        if (!file_exists($path . DIRECTORY_SEPARATOR . self::INSTALLER_PHP)) {
             return false;
         }
 
@@ -132,11 +139,29 @@ final class Installer
             return false;
         }
 
+        $override = false;
+
         require_once($installer);
+
+        if ($override) {
+            self::overrideWorkspace($path);
+        }
 
         array_push(self::$plugins, (string) $package);
 
         return true;
+    }
+
+
+    protected static function overrideWorkspace($path)
+    {
+        if (!self::$filesystem) {
+            self::$filesystem = new \Symfony\Component\Filesystem\Filesystem();
+        }
+
+        self::$filesystem->mirror($path . DIRECTORY_SEPARATOR . self::WORKSPACE_DIRECTORY, self::basePath(), null, [
+            'override' => true
+        ]);
     }
 
     /**
