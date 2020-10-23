@@ -2,45 +2,65 @@
 
 namespace Simple\Plugins;
 
+/**
+ * Make functionality of installing workspace of plugins in workspace of your project.
+ */
 final class Installer
 {
+    /**
+     * Name of file that contain list of plugins that have their workspace installed.
+     */
     const PLUGINS_JSON = 'plugins.json';
+
+    /**
+     * Name of installer of a plugin.
+     */
     const INSTALLER_PHP = 'installer.php';
+
+    /**
+     * Name of directory that is contain workspace of a plugin.
+     */
     const WORKSPACE_DIRECTORY = 'workspace';
 
     /**
+     * List of plugins that have their workspace installed.
+     * 
      * @var null|array<string>
      */
     protected static $plugins = null;
 
     /**
+     * Path to workspace of project.
+     * 
      * @var null|string
      */
     protected static $basePath = null;
 
     /**
      * Installation Manager.
+     * 
+     * @var null|\Composer\Installer\InstallationManager
      */
     protected static $installationManager = null;
 
     /**
      * List of installed packages.
      * 
-     * @var array
+     * @var null|array
      */
     protected static $packages = null;
 
     /**
-     * @var \Symfony\Component\Filesystem\Filesystem
+     * @var null|\Symfony\Component\Filesystem\Filesystem
      */
     protected static $filesystem = null;
 
     /**
-     * Callback after autoloading.
+     * The callback that run after the dumpautoload command.
      */
     public static function postAutoloadDump($event)
     {
-        self::config($event);
+        self::configure($event);
 
         foreach (self::$packages as $package) {
             if (self::install($package)) {
@@ -52,7 +72,7 @@ final class Installer
     }
 
     /**
-     * Base path of workspace.
+     * Get the base path of the project installation.
      * 
      * @param string $path
      * @return 
@@ -71,16 +91,15 @@ final class Installer
     }
 
     /**
-     * Get list of repositories.
+     * Initilize installationManager and packages.
      */
-    protected static function config($event)
+    protected static function configure($event)
     {
         $composer = $event->getComposer();
         $repositoryManager = $composer->getRepositoryManager();
         self::$installationManager = $composer->getInstallationManager();
         $localRepository = $repositoryManager->getLocalRepository();
         self::$packages = $localRepository->getPackages();
-        self::getPlugins();
     }
 
     /**
@@ -99,7 +118,7 @@ final class Installer
      * 
      * @return array<string>
      */
-    protected static function getPlugins()
+    protected static function plugins()
     {
         if (self::$plugins) {
             return self::$plugins;
@@ -121,9 +140,19 @@ final class Installer
     }
 
     /**
+     * Add package to plugins list.
+     * 
+     * @param \Composer\Package\CompletePackage $package
+     */
+    protected static function add($package)
+    {
+        array_push(self::$plugins, (string) $package);
+    }
+
+    /**
      * Install a package workspace.
      * 
-     * @param  string $path
+     * @param  \Composer\Package\CompletePackage $package
      * @return bool
      */
     protected static function install($package)
@@ -131,14 +160,19 @@ final class Installer
         $path = self::getInstallPath($package);
 
         $installer = $path . DIRECTORY_SEPARATOR . self::INSTALLER_PHP;
-        if (!file_exists($path . DIRECTORY_SEPARATOR . self::INSTALLER_PHP)) {
+        if (!file_exists($installer)) {
             return false;
         }
 
-        if (in_array((string) $package, self::$plugins)) {
+        if (in_array((string) $package, self::plugins())) {
             return false;
         }
 
+        //
+        // Get option to plugin installer to copy and ovrride its workspace
+        // into project directory without implementation just by setting this
+        // variable with true.
+        //
         $override = false;
 
         require_once($installer);
@@ -147,12 +181,16 @@ final class Installer
             self::overrideWorkspace($path);
         }
 
-        array_push(self::$plugins, (string) $package);
+        self::add($package);
 
         return true;
     }
 
-
+    /**
+     * Copy and override plugin workspace into project directory.
+     * 
+     * @param strint $path Path to package directory.
+     */
     protected static function overrideWorkspace($path)
     {
         if (!self::$filesystem) {
