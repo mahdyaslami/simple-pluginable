@@ -128,15 +128,13 @@ final class Installer
             return false;
         }
 
-        if (in_array($package, self::$packages)) {
+        if (in_array((string) $package, self::$plugins)) {
             return false;
         }
 
         require_once($installer);
 
-        array_push(self::$plugins, $package);
-
-
+        array_push(self::$plugins, (string) $package);
 
         return true;
     }
