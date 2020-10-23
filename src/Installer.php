@@ -56,41 +56,6 @@ final class Installer
     protected static $filesystem = null;
 
     /**
-     * The callback that run after the dumpautoload command.
-     */
-    public static function postAutoloadDump($event)
-    {
-        self::configure($event);
-
-        foreach (self::$packages as $package) {
-            if (self::install($package)) {
-                echo "\"{$package}\" workspace installed successfully.\n";
-            }
-        }
-
-        self::save();
-    }
-
-    /**
-     * Get the base path of the project installation.
-     * 
-     * @param string $path
-     * @return 
-     */
-    public static function basePath($path = '')
-    {
-        if (self::$basePath) {
-            $path = trim($path, '/\\');
-
-            return self::$basePath . ($path ? DIRECTORY_SEPARATOR . $path : $path);
-        }
-
-        self::$basePath = getcwd();
-
-        return self::basePath($path);
-    }
-
-    /**
      * Initilize installationManager and packages.
      */
     protected static function configure($event)
@@ -150,6 +115,32 @@ final class Installer
     }
 
     /**
+     * Save installed plugins.
+     * 
+     * @return bool
+     */
+    protected static function save()
+    {
+        return file_put_contents(self::basePath(self::PLUGINS_JSON), json_encode(self::$plugins));
+    }
+
+    /**
+     * Copy and override plugin workspace into project directory.
+     * 
+     * @param string $path Path to package directory.
+     */
+    protected static function overrideWorkspace($path)
+    {
+        if (!self::$filesystem) {
+            self::$filesystem = new \Symfony\Component\Filesystem\Filesystem();
+        }
+
+        self::$filesystem->mirror($path . DIRECTORY_SEPARATOR . self::WORKSPACE_DIRECTORY, self::basePath(), null, [
+            'override' => true
+        ]);
+    }
+
+    /**
      * Install a package workspace.
      * 
      * @param  \Composer\Package\CompletePackage $package
@@ -187,28 +178,37 @@ final class Installer
     }
 
     /**
-     * Copy and override plugin workspace into project directory.
+     * Get the base path of the project installation.
      * 
-     * @param strint $path Path to package directory.
+     * @param string $path
+     * @return 
      */
-    protected static function overrideWorkspace($path)
+    public static function basePath($path = '')
     {
-        if (!self::$filesystem) {
-            self::$filesystem = new \Symfony\Component\Filesystem\Filesystem();
+        if (self::$basePath) {
+            $path = trim($path, '/\\');
+
+            return self::$basePath . ($path ? DIRECTORY_SEPARATOR . $path : $path);
         }
 
-        self::$filesystem->mirror($path . DIRECTORY_SEPARATOR . self::WORKSPACE_DIRECTORY, self::basePath(), null, [
-            'override' => true
-        ]);
+        self::$basePath = getcwd();
+
+        return self::basePath($path);
     }
 
     /**
-     * Save installed plugins.
-     * 
-     * @return bool
+     * The callback that run after the dumpautoload command.
      */
-    protected static function save()
+    public static function postAutoloadDump($event)
     {
-        return file_put_contents(self::basePath(self::PLUGINS_JSON), json_encode(self::$plugins));
+        self::configure($event);
+
+        foreach (self::$packages as $package) {
+            if (self::install($package)) {
+                echo "\"{$package}\" workspace installed successfully.\n";
+            }
+        }
+
+        self::save();
     }
 }
