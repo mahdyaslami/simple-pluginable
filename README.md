@@ -24,8 +24,8 @@ composer require simple-pluginable
 
 ## Process
 
-Pluginable will after running dump autoload command and check all packages and execute `installer.php` file of packages if exists.
+Pluginable runs after the `dumpautoload` command and checks all packages and executes the `installer.php` file if it exists.
 
-Installer of packages will update project workspace.
+Installer(`installer.php`) of packages will update project workspace.
 
 Pluginable prevents a plugins from being installed twice and after installing all the plugins, they save them in the plugins.json file in the project root directory.
