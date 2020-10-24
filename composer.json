@@ -14,9 +14,6 @@
     "autoload": {
         "psr-4": {
             "Simple\\Plugins\\": "src/"
-        },
-        "files": [
-            "bootstrap.php"
-        ]
+        }
     }
 }
