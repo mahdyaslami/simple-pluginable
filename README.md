@@ -36,4 +36,15 @@ It's simple. you need to only create your package and we prepare some options th
 
 ### Installer
 
-Create `install.php` file on route of your package (prevent using it on `composer.json->autoload`). 
+Create `install.php` file on root of your package (don't use it on `composer.json->autoload`). and finally write your installation script.
+
+You can use [`Simple\Plugins\Installer::basePath`](https://github.com/mahdyaslami/simple-pluginable/blob/06448f67dca14f3bcc196b56f4c593bec3161e33/src/Installer.php#L186) for knowing wher is workspace.
+
+If you just want to copy some file you can create a folder with `workspace` name and put your structure there. and finally add following code on your installer:
+
+```
+<?php
+
+$override = true;
+
+```
