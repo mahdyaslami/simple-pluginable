@@ -29,3 +29,22 @@ Pluginable runs after the `dumpautoload` command and checks all packages and exe
 Installer(`installer.php`) of packages will update project workspace.
 
 Pluginable prevents a plugins from being installed twice and after installing all the plugins, they save them in the plugins.json file in the project root directory.
+
+## How create a plugin?
+
+It's simple. you need to only create your package and we prepare some options that helps you to install your workspace.
+
+### Installer
+
+Create `install.php` file on root of your package (don't use it on `composer.json->autoload`). and finally write your installation script.
+
+You can use [`Simple\Plugins\Installer::basePath`](https://github.com/mahdyaslami/simple-pluginable/blob/06448f67dca14f3bcc196b56f4c593bec3161e33/src/Installer.php#L186) for knowing wher is workspace.
+
+If you just want to copy some file you can create a folder with `workspace` name and put your structure there. and finally add following code on your installer:
+
+```
+<?php
+
+$override = true;
+
+```
