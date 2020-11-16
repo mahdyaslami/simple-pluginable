@@ -57,6 +57,9 @@ final class Installer
 
     /**
      * Initilize installationManager and packages.
+     * 
+     * @param  \Composer\Script\Event $event
+     * @return void
      */
     protected static function configure($event)
     {
@@ -70,7 +73,7 @@ final class Installer
     /**
      * Get package install path.
      * 
-     * @param string $package
+     * @param  string $package
      * @return string
      */
     protected static function getInstallPath($package)
@@ -107,7 +110,8 @@ final class Installer
     /**
      * Add package to plugins list.
      * 
-     * @param \Composer\Package\CompletePackage $package
+     * @param  \Composer\Package\CompletePackage $package
+     * @return void
      */
     protected static function add($package)
     {
@@ -127,7 +131,8 @@ final class Installer
     /**
      * Copy and override plugin workspace into project directory.
      * 
-     * @param string $path Path to package directory.
+     * @param  string $path Path to package directory.
+     * @return void
      */
     protected static function overrideWorkspace($path)
     {
@@ -180,8 +185,8 @@ final class Installer
     /**
      * Get the base path of the project installation.
      * 
-     * @param string $path
-     * @return 
+     * @param  string $path
+     * @return string
      */
     public static function basePath($path = '')
     {
@@ -198,6 +203,9 @@ final class Installer
 
     /**
      * The callback that run after the dumpautoload command.
+     * 
+     * @param  \Composer\Script\Event $event
+     * @return void
      */
     public static function postAutoloadDump($event)
     {
