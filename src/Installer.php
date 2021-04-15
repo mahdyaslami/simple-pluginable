@@ -1,6 +1,6 @@
 <?php
 
-namespace Simple\Plugins;
+namespace Simplex\Plugins;
 
 /**
  * Make functionality of installing workspace of plugins in workspace of your project.
@@ -165,7 +165,7 @@ final class Installer
         }
 
         //
-        // Get option to plugin installer to copy and ovrride its workspace
+        // Get option to plugin installer to copy and override its workspace
         // into project directory without implementation just by setting this
         // variable with true.
         //

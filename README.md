@@ -9,7 +9,7 @@ This package allows other packages to make these changes at minimal cost if they
 {
     ...
     "scripts": {
-            "post-autoload-dump": "SSFW\\Plugins\\Composer::postAutoloadDump"
+            "post-autoload-dump": "Simplex\\Plugins\\Composer::postAutoloadDump"
     }
 }
 ```
@@ -38,7 +38,7 @@ It's simple. you need to only create your package and we prepare some options th
 
 Create `install.php` file on root of your package (don't use it on `composer.json->autoload`). and finally write your installation script.
 
-You can use [`Simple\Plugins\Installer::basePath`](https://github.com/mahdyaslami/simple-pluginable/blob/06448f67dca14f3bcc196b56f4c593bec3161e33/src/Installer.php#L186) for knowing wher is workspace.
+You can use [`Simplex\Plugins\Installer::basePath`](https://github.com/mahdyaslami/simple-pluginable/blob/06448f67dca14f3bcc196b56f4c593bec3161e33/src/Installer.php#L186) for knowing where is workspace.
 
 If you just want to copy some file you can create a folder with `workspace` name and put your structure there. and finally add following code on your installer:
 
